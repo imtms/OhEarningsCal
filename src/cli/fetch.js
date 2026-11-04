@@ -1,3 +1,3 @@
-import { fetchEarningsWindow } from '../fetch/earnings.js';
+import { fetchAllEarnings } from '../fetch/earnings.js';
 
-await fetchEarningsWindow();
+await fetchAllEarnings();

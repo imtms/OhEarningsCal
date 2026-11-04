@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OhEarningsCal · US Earnings Calendar Subscriptions</title>
-  <meta name="description" content="Subscribe to US stock earnings dates in your calendar app. Updated daily. Covers Nasdaq-100, S&P 500, and Dow 30." />
+  <title>OhEarningsCal · Earnings Calendar Subscriptions</title>
+  <meta name="description" content="Subscribe to earnings dates in your calendar app. Updated daily. US indices and a custom watchlist covering US, German and French exchanges." />
   <style>
     :root {
       --bg: #fafaf9;
@@ -195,11 +195,11 @@
   <main>
     <header>
       <p class="eyebrow">OhEarningsCal</p>
-      <h1>US earnings calendar,<br/>subscribed in your calendar app</h1>
+      <h1>Earnings calendar,<br/>subscribed in your calendar app</h1>
       <p class="lede">
-        Pulls the next 30 days of earnings reports from Nasdaq every day and
-        publishes them as .ics subscription feeds — Nasdaq-100, S&amp;P 500,
-        Dow 30, plus a custom watchlist.
+        Follow US indices and your own watchlist across US, German and French exchanges.
+        Index feeds cover 30 days ahead; your watchlist includes the next available
+        report for each stock. Dates may be estimates and can change.
       </p>
     </header>
 
@@ -220,7 +220,8 @@
 
     <footer>
       <span>Updated daily at 04:34 / 16:34 UTC</span>
-      <a href="https://github.com/jason5ng32/OhEarningsCal" target="_blank" rel="noopener">GitHub</a>
+      <a href="watchlist-status.json" target="_blank" rel="noopener">Watchlist coverage</a>
+      <a href="https://github.com/imtms/OhEarningsCal" target="_blank" rel="noopener">GitHub</a>
     </footer>
   </main>
 
@@ -230,7 +231,7 @@
       { slug: 'nasdaq100',   icon: '💻', name: 'Nasdaq-100',    desc: 'Nasdaq-100 constituents' },
       { slug: 'sp500',       icon: '📈', name: 'S&P 500',       desc: 'S&P 500 constituents' },
       { slug: 'dow30',       icon: '🏛️', name: 'Dow 30',         desc: 'Dow Jones Industrial Average constituents' },
-      { slug: 'customstock', icon: '🎯', name: 'Custom',        desc: 'Driven by the CUSTOM_STOCKS repo variable' },
+      { slug: 'customstock', icon: '🎯', name: 'Custom',        desc: 'Your watchlist · next available report dates' },
       { slug: 'all',         icon: '🌐', name: 'All earnings',  desc: 'Every reporting company — large file' },
     ];
 

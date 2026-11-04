@@ -2,8 +2,9 @@ import { createEvents } from 'ics';
 import { writeFile, mkdir } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { icsFile } from '../lib/paths.js';
+import { normalizeSymbol, yahooSymbol } from '../lib/symbols.js';
 
-function buildEvent(entry) {
+export function buildEvent(entry) {
   const [y, m, d] = entry.date.split('-').map(Number);
   const timeSuffix = entry.time ? ` (${entry.time})` : '';
 
@@ -15,9 +16,12 @@ function buildEvent(entry) {
     entry.epsForecast ? `💵 EPS forecast: ${entry.epsForecast}` : null,
     entry.marketCap && entry.marketCap !== 'N/A' ? `💰 Market cap: ${entry.marketCap}` : null,
     entry.time ? `⏰ Reporting: ${entry.time}` : null,
+    entry.timezone ? `🌍 Reporting timezone: ${entry.timezone}` : null,
+    entry.source ? `Source: ${entry.source}${entry.sourceUrl ? ` · ${entry.sourceUrl}` : ''}` : null,
+    'Date may be an estimate and can change. Confirm with the company’s investor relations calendar.',
     '',
     `📱 Open in Stocks app: stocks://?symbol=${entry.symbol}`,
-    `🌐 Yahoo Finance: https://finance.yahoo.com/quote/${entry.symbol}`,
+    `🌐 Yahoo Finance: https://finance.yahoo.com/quote/${yahooSymbol(entry.symbol)}`,
     '',
     '— — —',
     'Earnings calendar by Beavern · https://beavern.com',
@@ -25,11 +29,12 @@ function buildEvent(entry) {
   ].filter((line) => line !== null).join('\n');
 
   return {
+    uid: `${normalizeSymbol(entry.symbol)}@oh-earnings-cal`,
     title: `${entry.symbol} ${entry.companyName}${timeSuffix} earnings`,
     description,
     start: [y, m, d],
     startInputType: 'utc',
-    status: 'CONFIRMED',
+    status: 'TENTATIVE',
     busyStatus: 'FREE',
     alarms: [
       { action: 'display', description: 'Earnings reminder', trigger: { hours: 2, minutes: 0, before: true } },

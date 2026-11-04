@@ -41,6 +41,9 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Test calendar processing
+        run: pnpm test
+
       - name: Restore earnings cache
         uses: actions/cache@v5
         with:
@@ -54,6 +57,7 @@ jobs:
         env:
           SHOULD_GEN_SELECTED: ${{ vars.SHOULD_GEN_SELECTED }}
           SHOULD_GEN_ALL: ${{ vars.SHOULD_GEN_ALL }}
+          CUSTOM_STOCKS: ${{ vars.CUSTOM_STOCKS }}
 
       - name: Generate ics files
         run: pnpm run gen
@@ -61,6 +65,26 @@ jobs:
           SHOULD_GEN_SELECTED: ${{ vars.SHOULD_GEN_SELECTED }}
           SHOULD_GEN_ALL: ${{ vars.SHOULD_GEN_ALL }}
           CUSTOM_STOCKS: ${{ vars.CUSTOM_STOCKS }}
+
+      - name: Watchlist coverage
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync, appendFileSync } from 'node:fs';
+          const report = JSON.parse(readFileSync('docs/watchlist-status.json', 'utf8'));
+          const lines = [
+            `## Custom watchlist: ${report.scheduled}/${report.total} upcoming dates`,
+            '',
+            'Dates may be estimates. See each event for its source and reporting timezone.',
+            '',
+            '| Symbol | Next report | Source | Status |',
+            '| --- | --- | --- | --- |',
+            ...report.stocks.map(s => `| ${s.symbol} | ${s.date ?? 'Not available'} | ${s.source ?? '—'} | ${s.status}${s.dataStatus === 'cached' ? ' (cached)' : ''} |`),
+          ];
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join('\n') + '\n');
+          if (report.scheduled < report.total) {
+            console.log(`::warning::Only ${report.scheduled}/${report.total} custom symbols have upcoming dates. See the coverage summary.`);
+          }
+          JS
 
       - uses: actions/configure-pages@v6
 

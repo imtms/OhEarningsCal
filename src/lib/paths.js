@@ -11,8 +11,12 @@ export const INDICES_DIR = resolve(DATA_DIR, 'indices');
 export const DOCS_DIR = resolve(ROOT, 'docs');
 export const ICS_DIR = resolve(DOCS_DIR, 'ics');
 
-export function earningsCacheFile(isoDate) {
-  return resolve(EARNINGS_DIR, `${isoDate}.json`);
+export function earningsCacheFile(isoDate, dataDir = DATA_DIR) {
+  return resolve(dataDir, 'earnings', `${isoDate}.json`);
+}
+
+export function watchlistCacheFile(dataDir = DATA_DIR) {
+  return resolve(dataDir, 'earnings', 'watchlist.json');
 }
 
 export function indexFile(slug) {

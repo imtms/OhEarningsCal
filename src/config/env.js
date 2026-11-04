@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { normalizeSymbol } from '../lib/symbols.js';
 
 function bool(value, fallback = false) {
   if (value === undefined || value === '') return fallback;
@@ -7,10 +8,10 @@ function bool(value, fallback = false) {
 
 function parseTickers(value) {
   if (!value) return [];
-  return value
+  return [...new Set(value
     .split(',')
-    .map((s) => s.trim().toUpperCase())
-    .filter(Boolean);
+    .map(normalizeSymbol)
+    .filter(Boolean))];
 }
 
 export const env = {

@@ -8,8 +8,8 @@ app.use('/', express.static(DOCS_DIR));
 
 app.get('/dev/fetch', async (_req, res, next) => {
   try {
-    const { fetchEarningsWindow } = await import('./fetch/earnings.js');
-    const result = await fetchEarningsWindow();
+    const { fetchAllEarnings } = await import('./fetch/earnings.js');
+    const result = await fetchAllEarnings();
     res.json({ ok: true, ...result });
   } catch (err) {
     next(err);
